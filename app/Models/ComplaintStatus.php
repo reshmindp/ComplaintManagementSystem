@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ComplaintStatus extends Model
 {
@@ -15,6 +17,7 @@ class ComplaintStatus extends Model
         'description',
         'is_active',
         'sort_order',
+        'complaints_count',
     ];
 
     protected function casts(): array
