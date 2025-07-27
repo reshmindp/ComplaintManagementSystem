@@ -1,61 +1,259 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Complaints Management System
+A comprehensive Laravel-based API system for managing customer complaints with role-based access control, real-time notifications, and complete complaint lifecycle management.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Features
+•	Role-Based Access Control: Admin, Technician, and User roles with specific permissions
+•	Complete Complaint Lifecycle: Creation, Assignment, Resolution, and Closure
+•	File Attachments: Support for multiple file uploads per complaint
+•	Real-time Notifications: Email and database notifications for complaint updates
+•	Advanced Filtering: Search and filter complaints by status, priority, category, and assignment
+•	Dashboard Analytics: Role-specific statistics and metrics
+•	API-First Design: RESTful API with comprehensive endpoints
+•	Performance Optimized: Query optimization, caching, and N+1 prevention
+•	Comprehensive Testing: Feature and unit tests with high coverage
 
-## About Laravel
+Architecture & Design Choices
+Clean Architecture Principles
+•	Service Layer: Business logic separated from controllers using dedicated service classes
+•	Repository Pattern: Data access abstraction through Eloquent models with optimized relationships
+•	Policy-Based Authorization: Fine-grained permissions using Laravel Policies
+•	Event-Driven Architecture: Complaint lifecycle events trigger automated notifications
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Database Design
+•	Normalized Structure: Separate tables for complaints, statuses, assignments, and resolutions
+•	Optimized Indexing: Strategic indexes on frequently queried columns
+•	Audit Trail: Complete history tracking through assignment and resolution tables
+•	Flexible Metadata: JSON fields for extensibility without schema changes
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Security & Performance
+•	Laravel Sanctum: Token-based API authentication
+•	Form Request Validation: Centralized validation with custom rules
+•	Query Optimization: Eager loading, select optimization, and caching strategies
+•	Rate Limiting: API endpoint protection against abuse
+•	File Security: Secure file upload handling with validation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Technology Stack
+•	Backend: Laravel 11 with PHP 8.2+
+•	Database: MySQL/PostgreSQL with migration-based schema management
+•	Authentication: Laravel Sanctum for API tokens
+•	Permissions: Spatie Laravel Permission package
+•	Queue System: Database-based job queuing for notifications
+•	Testing: PHPUnit with feature and unit test coverage
 
-## Learning Laravel
+Requirements
+•	PHP 8.2 or higher
+•	Composer
+•	MySQL 8.0+ or PostgreSQL 13+
+•	Node.js 16+ (for asset compilation, if needed)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Installation & Setup
+1. Clone and Install Dependencies
+git clone <repository-url>
+cd complaints-management-system
+composer install
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Environment Configuration
+cp .env.example .env
+php artisan key:generate
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Database Configuration
+Update your .env file with database credentials:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=complaints_management
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 
-## Laravel Sponsors
+# Mail Configuration (for notifications)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_FROM_ADDRESS="noreply@complaints.com"
+MAIL_FROM_NAME="${APP_NAME}"
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Queue Configuration
+QUEUE_CONNECTION=database
 
-### Premium Partners
+4. Database Setup & Seeding
+# Seed with sample data
+php artisan db:seed
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+# Create storage symlink
+php artisan storage:link
 
-## Contributing
+5. Start the Application
+# Start development server
+php artisan serve
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Start queue worker (separate terminal)
+php artisan queue:work
 
-## Code of Conduct
+Test Users & Seeding Information
+The system comes pre-seeded with test users for each role:
+Admin User
+•	Email: admin@example.com
+•	Password: password
+•	Permissions: Full system access, user management, complaint oversight
+Technician Users
+•	Email: tech1@example.com / tech2@example.com
+•	Password: password
+•	Permissions: View all complaints, resolve assigned complaints, update complaint status
+Regular Users
+•	Count: 10 users created via factory
+•	Pattern: user1@example.com, user2@example.com, etc.
+•	Password: password
+•	Permissions: Create/view own complaints, update unresolved complaints
+Sample Data Created
+•	Complaint Statuses: Open, In Progress, Pending Customer, Resolved, Closed
+•	Roles & Permissions: Complete RBAC setup with granular permissions
+•	Sample Complaints: Various priorities and categories for testing
+Database Seeding Details
+# Individual seeders available:
+php artisan db:seed --class=RoleSeeder
+php artisan db:seed --class=ComplaintStatusSeeder
+php artisan db:seed --class=UserSeeder
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Reset and reseed everything:
+php artisan migrate:fresh --seed
 
-## Security Vulnerabilities
+Testing
+Run Test Suite
+# Run all tests
+php artisan test
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Run specific test classes
+php artisan test --filter=ComplaintManagementTest
+php artisan test --filter=ComplaintServiceTest
 
-## License
+# Run with coverage (requires Xdebug)
+php artisan test --coverage
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Run tests with verbose output
+php artisan test --verbose
+
+API Documentation
+Authentication Endpoints
+POST /api/auth/login          # User login
+POST /api/auth/register       # User registration
+POST /api/auth/logout         # Logout (requires token)
+GET  /api/auth/user          # Get authenticated user
+
+Complaint Management
+GET    /api/complaints              # List complaints (with filters)
+POST   /api/complaints              # Create new complaint
+GET    /api/complaints/{id}         # View specific complaint
+PUT    /api/complaints/{id}         # Update complaint
+DELETE /api/complaints/{id}         # Delete complaint
+POST   /api/complaints/{id}/assign  # Assign to technician
+POST   /api/complaints/{id}/resolve # Resolve complaint
+
+System Endpoints
+GET /api/dashboard/stats        # Role-specific dashboard statistics
+GET /api/users/technicians      # List available technicians
+GET /api/complaint-statuses     # Available complaint statuses
+
+API Usage Examples
+1. Login
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"email":"admin@example.com","password":"password"}'
+
+2. Create Complaint
+POST /api/complaints
+Headers:
+  Authorization: Bearer YOUR_TOKEN
+  Content-Type: application/json
+  Accept: application/json
+
+Body:
+{
+    "title": "System Error - Payment Processing",
+    "description": "Users are reporting payment processing failures when trying to complete transactions. The error occurs at the final confirmation step.",
+    "priority": "critical",
+    "category": "billing"
+}
+
+3. Assign Complaint
+POST /api/complaints/{id}/assign
+Headers:
+  Authorization: Bearer YOUR_TOKEN
+  Content-Type: application/json
+
+Body:
+{
+    "assigned_to": 2,
+    "notes": "Assigning to senior technician for urgent resolution"
+}
+
+4. Resolve Complaint
+POST /api/complaints/{id}/resolve
+Headers:
+  Authorization: Bearer YOUR_TOKEN
+  Content-Type: application/json
+
+Body:
+{
+    "resolution_notes": "Issue resolved by updating payment gateway configuration",
+    "resolution_type": "resolved",
+    "internal_notes": "Updated timeout settings from 30s to 60s"
+}
+
+
+Valid Field Values
+Priority Options:
+•	"low" - Minor issues, can be addressed in standard timeframe
+•	"medium" - Standard priority for most complaints
+•	"high" - Important issues requiring faster resolution
+•	"critical" - Urgent issues affecting system functionality
+Category Options:
+•	"technical" - System, software, or technical issues
+•	"billing" - Payment, invoicing, or financial concerns
+•	"service" - Customer service or support related
+•	"product" - Product functionality or feature requests
+•	"other" - Miscellaneous complaints
+Resolution Types:
+•	"resolved" - Issue completely fixed
+•	"closed" - Complaint closed without resolution
+•	"escalated" - Moved to higher level support
+•	"duplicate" - Duplicate of existing complaint
+
+Configuration
+Key Configuration Files
+•	config/auth.php - Authentication guards and providers
+•	config/permission.php - Role and permission settings
+•	config/queue.php - Queue driver configuration
+•	config/mail.php - Email notification settings
+
+Monitoring & Maintenance
+Log Files
+•	Application logs: storage/logs/laravel.log
+•	Queue worker logs: storage/logs/worker.log
+
+Performance Optimization
+
+Database Optimization
+•	Indexes on frequently queried columns
+•	Eager loading relationships to prevent N+1 queries
+•	Query result caching for dashboard statistics
+
+Caching Strategy
+•	Route caching: php artisan route:cache
+•	Configuration caching: php artisan config:cache
+•	View caching: php artisan view:cache
+•	Redis for session and cache storage in production
+
+Security Considerations
+API Security
+•	Token-based authentication with Laravel Sanctum
+•	CORS configuration for web applications
+•	Input validation and sanitization
+Data Protection
+•	Secure file upload handling
+•	SQL injection prevention through Eloquent ORM
+•	XSS protection with proper output escaping
+
+
